@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STACK HOUSE | Smash & Burgers</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --card-bg: #141414;
+            --border-color: #262626;
+            --accent: #ff5722;
+            --accent-hover: #f4511e;
+            --text-main: #ffffff;
+            --text-muted: #a3a3a3;
+            --font-title: 'Bebas Neue', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-body);
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* HEADER & NAVIGATION */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: var(--font-title);
+            font-size: 32px;
+            letter-spacing: 2px;
+            color: var(--text-main);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--accent);
+        }
+
+        .header-cart-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-weight: 700;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        .header-cart-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        /* SECTIONS (PÁGINAS EM ROLAGEM CONTÍNUA) */
+        section {
+            min-height: 100vh;
+            padding: 140px 5% 80px 5%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        /* 1. HOME */
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .hero-content h1 {
+            font-family: var(--font-title);
+            font-size: 80px;
+            line-height: 0.95;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .hero-content h1 span {
+            color: var(--accent);
+        }
+
+        .hero-content p {
+            color: var(--text-muted);
+            font-size: 18px;
+            margin-bottom: 30px;
+            max-width: 500px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            animation: fadeIn 1s ease;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            padding: 15px 30px;
+            font-weight: 700;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(255, 87, 34, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid var(--border-color);
+            padding: 15px 30px;
+            font-weight: 700;
+            border-radius: 4px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-4px);
+        }
+
+        .hero-image-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-main-img {
+            width: 100%;
+            max-width: 480px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            border: 2px solid transparent;
+            object-fit: cover;
+            aspect-ratio: 1/1;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .hero-main-img:hover {
+            border-color: #ffffff;
+            transform: scale(1.05) rotate(3deg);
+            box-shadow: 0 25px 50px rgba(255, 255, 255, 0.15);
+        }
+
+        /* SECTION HEADER GLOBAL */
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-header h2 {
+            font-family: var(--font-title);
+            font-size: 50px;
+            letter-spacing: 2px;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        /* 2. CARDÁPIO */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .menu-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .menu-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+        }
+
+        .menu-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .menu-card:hover img {
+            transform: scale(1.08);
+        }
+
+        .menu-card-body {
+            padding: 20px;
+        }
+
+        .menu-card-body h3 {
+            font-family: var(--font-title);
+            font-size: 26px;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .menu-card-body p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 15px;
+            min-height: 42px;
+        }
+
+        .menu-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price {
+            font-family: var(--font-title);
+            font-size: 24px;
+            color: var(--accent);
+        }
+
+        .add-cart {
+            background: var(--border-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .add-cart:hover {
+            background: var(--accent);
+            transform: scale(1.05);
+        }
+
+        /* 3. NOVO MONTE SEU STACK (ESTILO LAB INTERATIVO) */
+        .lab-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .lab-preview {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lab-preview img {
+            width: 100%;
+            max-height: 320px;
+            object-fit: cover;
+            border-radius: 12px;
+            transition: all 0.4s ease;
+        }
+
+        .lab-preview h3 {
+            font-family: var(--font-title);
+            font-size: 28px;
+            letter-spacing: 1px;
+            margin-top: 20px;
+        }
+
+        .lab-preview .lab-price {
+            font-family: var(--font-title);
+            font-size: 32px;
+            color: var(--accent);
+            margin: 10px 0 20px 0;
+        }
+
+        .lab-options {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .lab-group h4 {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .lab-chips {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .lab-chip {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lab-chip:hover {
+            border-color: rgba(255, 87, 34, 0.5);
+        }
+
+        .lab-chip.active {
+            border-color: var(--accent);
+            background: rgba(255, 87, 34, 0.1);
+            color: var(--accent);
+        }
+
+        @media(max-width: 768px) {
+            .lab-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 4. SOBRE */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .about-grid img {
+            width: 100%;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            transition: transform 0.5s ease;
+        }
+
+        .about-grid img:hover {
+            transform: scale(1.03);
+        }
+
+        .about-text h2 {
+            font-family: var(--font-title);
+            font-size: 45px;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .about-text p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        /* 5. CONTATO */
+        .contact-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .contact-info {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            border-radius: 12px;
+            transition: border-color 0.3s;
+        }
+
+        .contact-info:hover {
+            border-color: var(--accent);
+        }
+
+        .contact-info h3 {
+            font-family: var(--font-title);
+            font-size: 28px;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+        }
+
+        .contact-item i {
+            color: var(--accent);
+            font-size: 20px;
+            margin-top: 3px;
+        }
+
+        /* BOTÕES FLUTUANTES ANIMADOS */
+        .floating-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 999;
+        }
+
+        .float-btn {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            border: none;
+            text-decoration: none;
+        }
+
+        .float-btn:hover {
+            transform: scale(1.18) rotate(8deg);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+        }
+
+        .whatsapp-float {
+            background: #25d366;
+            animation: pulseWhatsApp 2.5s infinite;
+        }
+
+        @keyframes pulseWhatsApp {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { box-shadow: 0 0 0 18px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+
+        .cart-float {
+            background: var(--accent);
+        }
+
+        .top-float {
+            background: #262626;
+            color: var(--text-muted);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .top-float.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .top-float:hover {
+            background: var(--text-main);
+            color: var(--bg-color);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: white;
+            color: var(--bg-color);
+            font-size: 11px;
+            font-weight: 800;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .cart-badge.bounce {
+            transform: scale(1.4) rotate(15deg);
+        }
+
+        /* MODAL DE CARRINHO */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            justify-content: flex-end;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.open {
+            display: flex;
+        }
+
+        .cart-drawer {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 400px;
+            height: 100%;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid var(--border-color);
+            animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .cart-header h3 {
+            font-family: var(--font-title);
+            font-size: 26px;
+            letter-spacing: 1px;
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-cart:hover {
+            color: var(--text-main);
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .cart-total {
+            font-family: var(--font-title);
+            font-size: 24px;
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media(max-width: 768px) {
+            .hero-grid, .about-grid, .contact-container {
+                grid-template-columns: 1fr;
+            }
+            .hero-content h1 {
+                font-size: 50px;
+            }
+            nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <a href="#home" class="logo">STACK<span>HOUSE</span></a>
+        <nav>
+            <a href="#home" class="nav-link active">Início</a>
+            <a href="#menu" class="nav-link">Cardápio</a>
+            <a href="#builder" class="nav-link">Monte o Seu</a>
+            <a href="#about" class="nav-link">Sobre</a>
+            <a href="#contact" class="nav-link">Contato</a>
+        </nav>
+        <button class="header-cart-btn" onclick="toggleCart()">
+            <i class="fa-solid fa-bag-shopping"></i> <span id="header-count">0</span>
+        </button>
+    </header>
+
+    <!-- 1. SEÇÃO INÍCIO (HOME) -->
+    <section id="home">
+        <div class="hero-grid">
+            <div class="hero-content">
+                <h1>ARTESANAL. <span>INTENSO.</span> FEITO NA BRASA.</h1>
+                <p>Burgers suculentos, smash de respeito e ingredientes frescos preparados diariamente para uma explosão de sabor incomparável.</p>
+                <div class="btn-group">
+                    <a href="#menu" class="btn-primary">Ver Cardápio</a>
+                    <a href="#builder" class="btn-secondary">Monte Seu Stack</a>
+                </div>
+            </div>
+            <div class="hero-image-container">
+                <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80" alt="Burger Stack" class="hero-main-img">
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. SEÇÃO CARDÁPIO -->
+    <section id="menu">
+        <div class="section-header">
+            <h2>NOSSO CARDÁPIO</h2>
+            <p>Arraste para baixo para explorar as opções e saborear o melhor da brasa</p>
+        </div>
+        <div class="menu-grid">
+            <div class="menu-card">
+                <img src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80" alt="Smash Classic">
+                <div class="menu-card-body">
+                    <h3>Smash Classic</h3>
+                    <p>Pão brioche, blend 100g na brasa, cheddar duplo e molho especial da casa.</p>
+                    <div class="menu-footer">
+                        <span class="price">R$ 28,00</span>
+                        <button class="add-cart" onclick="addToCart('Smash Classic', 28.00)">Pedir</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-card">
+                <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80" alt="Bacon Supreme">
+                <div class="menu-card-body">
+                    <h3>Bacon Supreme</h3>
+                    <p>Pão brioche, duplo smash 100g, bacon crocante em tiras e maionese verde.</p>
+                    <div class="menu-footer">
+                        <span class="price">R$ 36,00</span>
+                        <button class="add-cart" onclick="addToCart('Bacon Supreme', 36.00)">Pedir</button>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-card">
+                <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=600&q=80" alt="Monster Cheddar">
+                <div class="menu-card-body">
+                    <h3>Monster Cheddar</h3>
+                    <p>Três carnes de 100g, banho de cheddar cremoso derretido e farofa de bacon.</p>
+                    <div class="menu-footer">
+                        <span class="price">R$ 44,00</span>
+                        <button class="add-cart" onclick="addToCart('Monster Cheddar', 44.00)">Pedir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. NOVA SEÇÃO: MONTE SEU STACK (LAB VISUAL INTERATIVO) -->
+    <section id="builder">
+        <div class="section-header">
+            <h2>MONTE O SEU STACK</h2>
+            <p>Personalize ingredientes, escolha o ponto e crie seu burger exclusivo</p>
+        </div>
+        <div class="lab-container">
+            <div class="lab-preview">
+                <img id="lab-img" src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80" alt="Seu Stack Personalizado">
+                <h3 id="lab-title">Stack Customizado</h3>
+                <div class="lab-price" id="lab-price">R$ 32,00</div>
+                <button class="btn-primary" style="width: 100%;" onclick="addLabToCart()">Adicionar Stack ao Carrinho</button>
+            </div>
+            <div class="lab-options">
+                <div class="lab-group">
+                    <h4>1. Tipo de Pão</h4>
+                    <div class="lab-chips">
+                        <button class="lab-chip active" onclick="setLabOption(this, 'pao', 'Brioche', 0, 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80')">Brioche Manteiga</button>
+                        <button class="lab-chip" onclick="setLabOption(this, 'pao', 'Australiano', 3.00, 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=80')">Australiano</button>
+                    </div>
+                </div>
+                <div class="lab-group">
+                    <h4>2. Blend de Carne</h4>
+                    <div class="lab-chips">
+                        <button class="lab-chip active" onclick="setLabOption(this, 'carne', 'Duplo Smash (200g)', 0, '')">Duplo Smash (200g)</button>
+                        <button class="lab-chip" onclick="setLabOption(this, 'carne', 'Triplo Smash (300g)', 8.00, '')">Triplo Smash (300g)</button>
+                    </div>
+                </div>
+                <div class="lab-group">
+                    <h4>3. Queijo & Extras</h4>
+                    <div class="lab-chips">
+                        <button class="lab-chip active" onclick="setLabOption(this, 'queijo', 'Cheddar Duplo', 0, '')">Cheddar Duplo</button>
+                        <button class="lab-chip" onclick="setLabOption(this, 'queijo', 'Cheddar + Bacon Crocante', 6.00, '')">Cheddar + Bacon</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. SEÇÃO SOBRE -->
+    <section id="about">
+        <div class="about-grid">
+            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80" alt="Nossa Cozinha">
+            <div class="about-text">
+                <h2>TRADIÇÃO E BRASA NA MEDIDA CERTA</h2>
+                <p>Fundada com a missão de entregar o verdadeiro smash burger artesanal, nossa casa utiliza apenas carnes frescas selecionadas e grelhadas diretamente na brasa.</p>
+                <p>Cada ingrediente é preparado artesanalmente todos os dias para garantir sabor autêntico, crocância e suculência incomparáveis.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. SEÇÃO CONTATO -->
+    <section id="contact">
+        <div class="section-header">
+            <h2>CONTATO & LOCALIZAÇÃO</h2>
+            <p>Venha nos visitar ou faça seu pedido online</p>
+        </div>
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3>FALE CONOSCO</h3>
+                <div class="contact-item">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <div>
+                        <strong>Endereço</strong>
+                        <p>Recife, PE - Atendimento Delivery e Salão</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fa-solid fa-clock"></i>
+                    <div>
+                        <strong>Horário</strong>
+                        <p>Terça a Domingo: 18h às 23h30</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fa-solid fa-phone"></i>
+                    <div>
+                        <strong>WhatsApp</strong>
+                        <p>(81) 99999-9999</p>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-info">
+                <h3>FAÇA SEU PEDIDO</h3>
+                <p style="color: var(--text-muted); margin-bottom: 20px;">Atendimento rápido via WhatsApp com entrega para toda a região.</p>
+                <button class="btn-primary" style="width: 100%;" onclick="window.open('https://wa.me/5581999999999', '_blank')">Chamar no WhatsApp</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- BOTÕES FLUTUANTES ANIMADOS -->
+    <div class="floating-container">
+        <!-- Voltar ao Topo -->
+        <a href="#home" class="float-btn top-float" id="topBtn" title="Voltar ao Topo">
+            <i class="fa-solid fa-arrow-up"></i>
+        </a>
+        <!-- Carrinho Flutuante -->
+        <button class="float-btn cart-float" onclick="toggleCart()" title="Ver Carrinho">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span class="cart-badge" id="float-count">0</span>
+        </button>
+        <!-- WhatsApp Animado -->
+        <a href="https://wa.me/5581999999999" target="_blank" class="float-btn whatsapp-float" title="Fale no WhatsApp">
+            <i class="fa-brands fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <!-- MODAL DE CARRINHO -->
+    <div class="modal" id="cart-modal">
+        <div class="cart-drawer">
+            <div class="cart-header">
+                <h3>SEU PEDIDO</h3>
+                <button class="close-cart" onclick="toggleCart()">&times;</button>
+            </div>
+            <div class="cart-items" id="cart-items-list">
+                <p style="color: var(--text-muted); text-align: center; margin-top: 40px;">Seu carrinho está vazio</p>
+            </div>
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total-price">R$ 0,00</span>
+            </div>
+            <button class="btn-primary" onclick="checkoutWhatsApp()">Finalizar no WhatsApp</button>
+        </div>
+    </div>
+
+    <script>
+        // Carrinho de Compras
+        let cart = [];
+        let labConfig = {
+            pao: { name: 'Brioche', price: 0 },
+            carne: { name: 'Duplo Smash (200g)', price: 0 },
+            queijo: { name: 'Cheddar Duplo', price: 0 }
+        };
+
+        function toggleCart() {
+            document.getElementById('cart-modal').classList.toggle('open');
+        }
+
+        function addToCart(name, price) {
+            cart.push({name, price});
+            updateCartUI();
+            
+            const badge = document.getElementById('float-count');
+            badge.classList.add('bounce');
+            setTimeout(() => badge.classList.remove('bounce'), 300);
+            
+            toggleCart();
+        }
+
+        function updateCartUI() {
+            const count = cart.length;
+            document.getElementById('header-count').innerText = count;
+            document.getElementById('float-count').innerText = count;
+            
+            const list = document.getElementById('cart-items-list');
+            let total = 0;
+            
+            if(count === 0) {
+                list.innerHTML = '<p style="color: var(--text-muted); text-align: center; margin-top: 40px;">Seu carrinho está vazio</p>';
+                document.getElementById('cart-total-price').innerText = 'R$ 0,00';
+                return;
+            }
+
+            list.innerHTML = '';
+            cart.forEach((item, index) => {
+                total += item.price;
+                list.innerHTML += `
+                    <div class="cart-item">
+                        <div>
+                            <strong>${item.name}</strong>
+                            <p style="color: var(--accent); font-size: 14px;">R$ ${item.price.toFixed(2)}</p>
+                        </div>
+                        <button onclick="removeFromCart(${index})" style="background:none; border:none; color:#a3a3a3; cursor:pointer;"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `;
+            });
+            document.getElementById('cart-total-price').innerText = `R$ ${total.toFixed(2)}`;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function setLabOption(element, category, name, price, imgUrl) {
+            const parent = element.parentElement;
+            parent.querySelectorAll('.lab-chip').forEach(c => c.classList.remove('active'));
+            element.classList.add('active');
+
+            labConfig[category] = { name, price };
+
+            if(imgUrl) {
+                document.getElementById('lab-img').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('lab-img').src = imgUrl;
+                    document.getElementById('lab-img').style.opacity = '1';
+                }, 200);
+            }
+
+            updateLabTotal();
+        }
+
+        function updateLabTotal() {
+            const basePrice = 28.00;
+            const totalPrice = basePrice + labConfig.pao.price + labConfig.carne.price + labConfig.queijo.price;
+            document.getElementById('lab-title',).innerText = `${labConfig.pao.name} + ${labConfig.carne.name}`;
+            document.getElementById('lab-price').innerText = `R$ ${totalPrice.toFixed(2)}`;
+        }
+
+        function addLabToCart() {
+            const basePrice = 28.00;
+            const totalPrice = basePrice + labConfig.pao.price + labConfig.carne.price + labConfig.queijo.price;
+            const customName = `Stack Lab: ${labConfig.pao.name}, ${labConfig.carne.name}, ${labConfig.queijo.name}`;
+            addToCart(customName, totalPrice);
+        }
+
+        function checkoutWhatsApp() {
+            if(cart.length === 0) return;
+            let text = "Olá! Gostaria de fazer o seguinte pedido:%0A";
+            let total = 0;
+            cart.forEach(item => {
+                text += `- ${item.name} (R$ ${item.price.toFixed(2)})%0A`;
+                total += item.price;
+            });
+            text += `%0ATotal: R$ ${total.toFixed(2)}`;
+            window.open(`https://wa.me/5581999999999?text=${text}`, '_blank');
+        }
+
+        // Controle de scroll
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const topBtn = document.getElementById('topBtn');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+
+            if (window.scrollY > 400) {
+                topBtn.classList.add('show');
+            } else {
+                topBtn.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>
